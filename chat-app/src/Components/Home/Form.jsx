@@ -2,8 +2,8 @@ import React from 'react'
 import {styled,Box , Typography, Button , TextField, Icon} from '@mui/material'
 import PersonIcon from '@mui/icons-material/Person';
 import LockIcon from '@mui/icons-material/Lock';
-
-
+import { useState } from 'react';
+import PhoneIcon from '@mui/icons-material/Phone';
 const Homedisplay = styled(Box)`
     background-color:#757de8;
     widht:100%;
@@ -51,13 +51,29 @@ const Txtfld =styled(TextField)`
         
    `
 
-
-
+  const accntIntialvalue = {
+        login:{
+            view:'login'
+        },
+        signup:{
+            view:'signup'
+        }
+  }
+  
 
 
 
 
 function Form() {
+
+const [account , toggleAccount] = useState(accntIntialvalue.login)
+
+
+
+ const toggleSignup = () => {
+    toggleAccount(accntIntialvalue.signup)
+
+ }
   return (
     
     <Box>
@@ -68,6 +84,8 @@ function Form() {
                 <Box><p style={{fontSize:35}}>"Join Our Chat App Today!"</p></Box>
             </Box>
             <Formbox>
+              {
+                account.view === 'login'  ?
                 <FormData>
                 <Box>
                     <Typography style={{paddingBottom:50 , paddingLeft:108}} variant='h4'>Login</Typography>
@@ -98,11 +116,49 @@ function Form() {
                     <Typography>Don't have an account?</Typography>
                 </Box>
                 <Box>
-                <Button style={{border:'none'}}>Sign up</Button>
+                <Button style={{border:'none'}} onClick={()=>toggleSignup()}>Sign up</Button>
                 </Box>
                 </Box>
                 
                 </FormData>
+                :
+                <FormData>
+                <Box>
+                    <Typography style={{paddingBottom:50 , paddingLeft:108}} variant='h4'>Sign up</Typography>
+                </Box>
+                
+                <InptBox>
+                <Box>
+                    <Txtfld type="number" label='Enter phone no.' variant="outlined"/>
+                </Box>
+                <Box>
+                    <PhoneIcon style={{paddingLeft:58,position:'absolute',paddingTop:20}}/>
+                </Box>
+                </InptBox>
+
+                <InptBox>
+                <Box>
+                    <Txtfld type="email" label='Enter Username' variant="outlined"/>
+                </Box>
+                <Box>
+                    <PersonIcon style={{paddingLeft:58,position:'absolute',paddingTop:20}}/>
+                </Box>
+                </InptBox>
+                
+                <InptBox>
+                <Box>
+                    <Txtfld type="password" label='Enter password' variant="outlined"/>
+                </Box>
+                <Box>
+                    <LockIcon style={{paddingLeft:58,position:'absolute',paddingTop:20}}/>
+                </Box>
+                </InptBox>
+
+                <Box>
+                    <Btn>Sign Up</Btn>
+                </Box>
+                </FormData>
+              }
             </Formbox>  
             </Formbx>
 
