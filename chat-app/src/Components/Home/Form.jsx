@@ -4,6 +4,10 @@ import PersonIcon from '@mui/icons-material/Person';
 import LockIcon from '@mui/icons-material/Lock';
 import { useState } from 'react';
 import PhoneIcon from '@mui/icons-material/Phone';
+import Person3Icon from '@mui/icons-material/Person3';
+
+
+
 const Homedisplay = styled(Box)`
     background-color:#757de8;
     widht:100%;
@@ -122,10 +126,20 @@ const [account , toggleAccount] = useState(accntIntialvalue.login)
                 
                 </FormData>
                 :
-                <FormData>
+                <FormData  style={{height:"55vh",paddingTop:30,marginRight:10}}>
                 <Box>
-                    <Typography style={{paddingBottom:50 , paddingLeft:108}} variant='h4'>Sign up</Typography>
+                    <Typography style={{paddingBottom:40 , paddingLeft:100}} variant='h4'>Sign up</Typography>
                 </Box>
+
+
+                <InptBox>
+                <Box>
+                    <Txtfld type="text" label='Enter name' variant="outlined"/>
+                </Box>
+                <Box>
+                    <Person3Icon style={{paddingLeft:58,position:'absolute',paddingTop:20}}/>
+                </Box>
+                </InptBox>
                 
                 <InptBox>
                 <Box>
