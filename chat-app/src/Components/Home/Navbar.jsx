@@ -4,7 +4,7 @@ import {styled,Box , AppBar,Button , Typography} from '@mui/material'
 const Nav = styled(AppBar)`
     height:50px;
     width:100%;
-    background-color:#3f51b5;
+    background-color:#5e35b1;
     
 `
 const Navcontain =styled(Box)`
@@ -27,7 +27,6 @@ function Navbar() {
       <Nav>
             <Navcontain>
             <Box><Typography>LOGO</Typography></Box>
-            <Box><Btn >Login</Btn></Box>
             </Navcontain>
         </Nav>
     </Box>

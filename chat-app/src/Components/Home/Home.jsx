@@ -1,7 +1,8 @@
 import React from 'react'
 import {Box} from '@mui/material'
 import Navbar from './Navbar'
-import Form from './Form'
+// import Form from './Form'
+import Dashboard from '../Dashboard/Dashboard'
 
 
 
@@ -15,7 +16,10 @@ function Home() {
             <Navbar/>
         </Box>
         <Box>
-            <Form/>
+            {/* <Form/> */}
+        </Box>
+        <Box>
+            <Dashboard/>
         </Box>
     </Box>
   )
