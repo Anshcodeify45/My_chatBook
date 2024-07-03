@@ -6,17 +6,19 @@ import Chatting from './Chatting.jsx'
 const Container =styled(Box)`
     display:flex;
     padding-top:50px;
-
+     position:fixed;
 `
 const Chatlist = styled(Box)`
-    width:22%;
+    width:25%;
     background-color:#757de8;
-    height:98vh;
+    max-height:98vh;
+   
+
 `
 const Chatbox = styled(Box)`
-    width:78%;
+    width:75%;
     background-color:#d1c4e9;
-    height:113vh;
+    max-height:100vh;
 `
 
 const Dp = styled('img')({
@@ -29,8 +31,8 @@ const DpData = styled(Box)`
     align-items:center;
 `
 const Myprofile = styled(Box)`
-     padding-top:12px;
-     padding-bottom:22px;
+     padding-top:11px;
+     padding-bottom:18px;
      padding-left:65px; 
      border-bottom:2px solid;
      border-color:#ede7f6;
@@ -38,13 +40,18 @@ const Myprofile = styled(Box)`
      cursor:pointer;
 `
 const Chat = styled(Box)`
-     padding-top:13px;
-     padding-bottom:16px;
+     padding-top:9px;
+     padding-bottom:9px;
      padding-left:20px; 
      border-bottom:2px solid;
      border-color:#ede7f6;
      background-color:#673ab7;
      cursor:pointer;
+     
+`
+const Chatlists=styled(Box)`
+     max-height:74vh;
+     overflow-y:scroll;
 `
 const MessageBox = styled(Box)`
     background-color:#673ab7;
@@ -71,14 +78,14 @@ function Dashboard() {
         <MessageBox>
             <Typography>Messages</Typography>
         </MessageBox>
-        <Box>
+        <Chatlists>
             {
                 ChatList.map(el => (
                   
                     
                     <Chat>
                     <DpData>
-                    <Box style={{width:"20%" , paddingRight:20}}>
+                    <Box style={{width:"16%" , paddingRight:20}}>
                     <Dp src={el.dp} alt="Profile" />
                     </Box>
                     <Box>
@@ -92,7 +99,7 @@ function Dashboard() {
 
                 ))
             }
-        </Box>
+        </Chatlists>
       </Chatlist>
       <Chatbox> <Chatting/></Chatbox>
     </Container>
