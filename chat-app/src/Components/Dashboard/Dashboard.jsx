@@ -1,6 +1,7 @@
 import React from 'react'
 import { Box ,styled ,Typography} from '@mui/material'
 import { ChatList } from '../../Chatlist.js'
+import Chatting from './Chatting.jsx'
 
 const Container =styled(Box)`
     display:flex;
@@ -10,7 +11,7 @@ const Container =styled(Box)`
 const Chatlist = styled(Box)`
     width:22%;
     background-color:#757de8;
-    height:100vh;
+    height:98vh;
 `
 const Chatbox = styled(Box)`
     width:78%;
@@ -29,7 +30,7 @@ const DpData = styled(Box)`
 `
 const Myprofile = styled(Box)`
      padding-top:12px;
-     padding-bottom:16px;
+     padding-bottom:22px;
      padding-left:65px; 
      border-bottom:2px solid;
      border-color:#ede7f6;
@@ -93,7 +94,7 @@ function Dashboard() {
             }
         </Box>
       </Chatlist>
-      <Chatbox> <h1>chat</h1></Chatbox>
+      <Chatbox> <Chatting/></Chatbox>
     </Container>
   )
 }
