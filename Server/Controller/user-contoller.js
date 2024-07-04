@@ -1,20 +1,19 @@
 
-import { request, response } from "express"
-import user from "../Model/userSchema.js"
+import User from "../Model/userSchema.js"
 
 export const userSignup = async (request ,response) =>{
         try{
-
-            const exist = await user.findOne({username:request.body,username})
+            
+            const exist = await User.findOne({username:request.body.username})
             if(exist){
                 return response.status(401).json({message:"username already exist"})
             }
 
-            const User=request.body
-            const newUser = new user(User);
+            const user=request.body
+            const newUser = new User(user);
             await newUser.save();
 
-            response.status(200).json({message:User})
+            response.status(200).json({message:user})
         }catch(error){
             response.status(500).json({message:error.message});
         }
@@ -27,9 +26,9 @@ export const userLogin = async(request,response)=>{
             const username=request.body.username;
             const password=request.body.password;
 
-            let user = await user.findOne({username:username , password:password});
+            let user = await User.findOne({username:username , password:password});
 
-            if(Data){
+            if(user){
                 return response.status(200).json(`${username}login successfully`)
             }
             else{

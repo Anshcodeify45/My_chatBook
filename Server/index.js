@@ -1,7 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv';
 import Connection from "./Database/db.js";
-import router from './Routes/routes.js';
+import Router from './Routes/routes.js';
 import cors from "cors";
 import bodyParser from 'body-parser';
 const app = express()
@@ -11,7 +11,7 @@ dotenv.config();
 app.use(cors());
 app.use(bodyParser.json({extended:true}));
 app.use(bodyParser.urlencoded({extended:true}));
-app.use('/',router);
+app.use('/',Router);
 
 
 

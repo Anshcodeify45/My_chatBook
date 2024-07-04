@@ -108,18 +108,15 @@ const [account , toggleAccount] = useState(accntIntialvalue.login)
 const [signup ,setSignup] =useState(signUpinitialValues)
 const [login ,setLogin]=useState(logininitialValues)
 const [error , setError] =useState(false);
-const Nav = useNavigate()
+const navigate = useNavigate()
 
  const toggleSignup = () => {
     toggleAccount(accntIntialvalue.signup)
-
  }
  const toggleLogin = async() => {
   let response=  await authenticateSignup(signup);
   if(!response) return
   toggleAccount(accntIntialvalue.login)
-  Nav('/login')
-
  }
  const oninputChange = (e) =>{
     setSignup({...signup,[e.target.name]:e.target.value })
@@ -136,7 +133,7 @@ const loginuser = async()=>{
     let response = await authenticateLogin(login)
     console.log(response);
     if(response.status === 200){
-            Nav('/home');
+        navigate('/home');
     }
     else{
         setError(true);
