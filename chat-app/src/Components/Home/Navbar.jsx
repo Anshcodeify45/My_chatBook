@@ -2,7 +2,7 @@ import React from 'react'
 import {styled,Box , AppBar,Button , Typography} from '@mui/material'
 
 const Nav = styled(AppBar)`
-    height:50px;
+    height:58px;
     width:100%;
     background-color:#5e35b1;
     
@@ -18,6 +18,14 @@ const Btn=styled(Button)`
     padding:10px;
     margin-top:3px;
 `
+const ImgBox =styled(Box)`
+    width:10%;
+    padding-left:20px;
+    padding-top:5px;
+`
+const Logo = styled('img')({
+    width:"30%",
+})
 
 
 
@@ -26,7 +34,7 @@ function Navbar() {
     <Box>
       <Nav>
             <Navcontain>
-            <Box><Typography>LOGO</Typography></Box>
+            <ImgBox><Logo src="https://static.vecteezy.com/system/resources/previews/020/945/959/original/chat-app-logo-png.png" alt="" /></ImgBox>
             </Navcontain>
         </Nav>
     </Box>

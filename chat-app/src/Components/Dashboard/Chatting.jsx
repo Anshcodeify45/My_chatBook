@@ -47,7 +47,7 @@ const DataBox=styled(Box)`
       
   `
 const Chats = styled(Box)`
-      max-height:76vh;
+      max-height:74vh;
       overflow-y:scroll;
 `
 const Mychats = styled(Box)`
@@ -90,8 +90,10 @@ const Inputchat = styled(Box)`
       align-items:center;
       border-radius:12px;
       background-color:#b388ff;
-      padding:13px 80px 13px 80px;
+      padding:13px 80px 12px 80px;
       margin-top:8px;
+      width:80%;
+      margin-left:38px;
 `
 
 const IcnBox = styled(Box)`

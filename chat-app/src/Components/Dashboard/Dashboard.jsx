@@ -5,7 +5,7 @@ import Chatting from './Chatting.jsx'
 
 const Container =styled(Box)`
     display:flex;
-    padding-top:50px;
+    padding-top:58px;
      position:fixed;
 `
 const Chatlist = styled(Box)`

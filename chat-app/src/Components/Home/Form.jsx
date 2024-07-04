@@ -2,11 +2,12 @@ import React from 'react'
 import {styled,Box , Typography, Button , TextField, Icon} from '@mui/material'
 import PersonIcon from '@mui/icons-material/Person';
 import LockIcon from '@mui/icons-material/Lock';
-import { useState } from 'react';
+import { useState} from 'react';
 import PhoneIcon from '@mui/icons-material/Phone';
 import Person3Icon from '@mui/icons-material/Person3';
-
-
+import { Link } from 'react-router-dom';
+import { authenticateSignup ,authenticateLogin} from '../../Service/api';
+import { useNavigate } from 'react-router-dom';
 
 const Homedisplay = styled(Box)`
     background-color:#757de8;
@@ -54,7 +55,31 @@ const Txtfld =styled(TextField)`
         border-radius:5px;
         
    `
+   const BtnLink = styled(Link)({
+    marginLeft:"70px",
+    padding:"10px 50px 17px 50px",
+    backgroundColor:"#757de8",
+    color:"white",
+    fontSize:20,
+    borderRadius:5,
+    textDecoration:"none"
+   })
 
+   const Btnlinksignup = styled(Link)({
+    color:"white",
+    fontSize:17,
+    backgroundColor:"#3f51b5",
+    textDecoration:"none",
+    alignItems:"center",
+    padding:"5px 10px 7px 10px",
+    borderRadius:5,
+    marginLeft:5,
+   })
+
+   const Error=styled(Typography)`
+    font-size:16px;
+    color:red;
+   `
   const accntIntialvalue = {
         login:{
             view:'login'
@@ -66,18 +91,58 @@ const Txtfld =styled(TextField)`
   
 
 
+const signUpinitialValues = {
+    name:'',
+    username:'',
+    password:'',
+    phone:'',
+}
 
-
+const logininitialValues = {
+    username:'',
+    password:'',
+}
 function Form() {
 
 const [account , toggleAccount] = useState(accntIntialvalue.login)
-
-
+const [signup ,setSignup] =useState(signUpinitialValues)
+const [login ,setLogin]=useState(logininitialValues)
+const [error , setError] =useState(false);
+const Nav = useNavigate()
 
  const toggleSignup = () => {
     toggleAccount(accntIntialvalue.signup)
 
  }
+ const toggleLogin = async() => {
+  let response=  await authenticateSignup(signup);
+  if(!response) return
+  toggleAccount(accntIntialvalue.login)
+  Nav('/login')
+
+ }
+ const oninputChange = (e) =>{
+    setSignup({...signup,[e.target.name]:e.target.value })
+    console.log(signup);
+ }
+ 
+
+ const toggleLoginData = (e) => {
+        setLogin({...login,[e.target.name]:e.target.value})
+ }
+
+
+const loginuser = async()=>{
+    let response = await authenticateLogin(login)
+    console.log(response);
+    if(response.status === 200){
+            Nav('/home');
+    }
+    else{
+        setError(true);
+    }
+}
+
   return (
     
     <Box>
@@ -85,7 +150,7 @@ const [account , toggleAccount] = useState(accntIntialvalue.login)
            <Formbx>
             <Box>
                 <Box><img src="https://cdni.iconscout.com/illustration/premium/thumb/couple-chatting-on-social-media-4431098-3692641.png" alt="Logo" /></Box>
-                <Box><p style={{fontSize:35}}>"Join Our Chat App Today!"</p></Box>
+                <Box><p style={{fontSize:35}}>"Join Our chat app Today!"</p></Box>
             </Box>
             <Formbox>
               {
@@ -96,7 +161,8 @@ const [account , toggleAccount] = useState(accntIntialvalue.login)
                 </Box>
                 <InptBox>
                 <Box>
-                    <Txtfld type="email" label='Enter Username' variant="outlined"/>
+                    <Txtfld type="email" label='Enter Username' variant="outlined" onChange={(e)=>toggleLoginData(e)} name='username'/>
+                    
                 </Box>
                 <Box>
                     <PersonIcon style={{paddingLeft:58,position:'absolute',paddingTop:20}}/>
@@ -105,7 +171,7 @@ const [account , toggleAccount] = useState(accntIntialvalue.login)
                 
                 <InptBox>
                 <Box>
-                    <Txtfld type="password" label='Enter password' variant="outlined"/>
+                    <Txtfld type="password" label='Enter password' variant="outlined" onChange={(e)=>toggleLoginData(e)}name='password'/>
                 </Box>
                 <Box>
                     <LockIcon style={{paddingLeft:58,position:'absolute',paddingTop:20}}/>
@@ -113,14 +179,15 @@ const [account , toggleAccount] = useState(accntIntialvalue.login)
                 </InptBox>
 
                 <Box>
-                    <Btn>Login</Btn>
+                    <Btn onClick={()=>loginuser()}>Login</Btn>
+                   {error && <Error>Please enter valid username or password</Error>}
                 </Box>
                 <Box style={{display:'flex',paddingTop:20,alignItems:'center',marginLeft:25}}>
                 <Box>
                     <Typography>Don't have an account?</Typography>
                 </Box>
                 <Box>
-                <Button style={{border:'none'}} onClick={()=>toggleSignup()}>Sign up</Button>
+                <Btnlinksignup to="/signup" style={{border:'none'}} onClick={()=>toggleSignup()}>Sign up</Btnlinksignup>
                 </Box>
                 </Box>
                 
@@ -134,7 +201,7 @@ const [account , toggleAccount] = useState(accntIntialvalue.login)
 
                 <InptBox>
                 <Box>
-                    <Txtfld type="text" label='Enter name' variant="outlined"/>
+                    <Txtfld type="text" label='Enter name' variant="outlined" onChange={(e)=>oninputChange(e)} name='name'/>
                 </Box>
                 <Box>
                     <Person3Icon style={{paddingLeft:58,position:'absolute',paddingTop:20}}/>
@@ -143,7 +210,7 @@ const [account , toggleAccount] = useState(accntIntialvalue.login)
                 
                 <InptBox>
                 <Box>
-                    <Txtfld type="number" label='Enter phone no.' variant="outlined"/>
+                    <Txtfld type="number" label='Enter phone no.' variant="outlined" onChange={(e)=>oninputChange(e)} name='phone'/>
                 </Box>
                 <Box>
                     <PhoneIcon style={{paddingLeft:58,position:'absolute',paddingTop:20}}/>
@@ -152,7 +219,7 @@ const [account , toggleAccount] = useState(accntIntialvalue.login)
 
                 <InptBox>
                 <Box>
-                    <Txtfld type="email" label='Enter Username' variant="outlined"/>
+                    <Txtfld type="email" label='Enter Username' variant="outlined" onChange={(e)=>oninputChange(e)} name='username'/>
                 </Box>
                 <Box>
                     <PersonIcon style={{paddingLeft:58,position:'absolute',paddingTop:20}}/>
@@ -161,7 +228,7 @@ const [account , toggleAccount] = useState(accntIntialvalue.login)
                 
                 <InptBox>
                 <Box>
-                    <Txtfld type="password" label='Enter password' variant="outlined"/>
+                    <Txtfld type="password" label='Enter password' variant="outlined" onChange={(e)=>oninputChange(e)} name='password'/>
                 </Box>
                 <Box>
                     <LockIcon style={{paddingLeft:58,position:'absolute',paddingTop:20}}/>
@@ -169,7 +236,7 @@ const [account , toggleAccount] = useState(accntIntialvalue.login)
                 </InptBox>
 
                 <Box>
-                    <Btn>Sign Up</Btn>
+                    <BtnLink to="/login" onClick={()=>toggleLogin()}>Sign Up</BtnLink>
                 </Box>
                 </FormData>
               }
