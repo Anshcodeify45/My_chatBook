@@ -2,13 +2,13 @@ import React from 'react'
 import {styled,Box , Typography, Button , TextField, Icon} from '@mui/material'
 import PersonIcon from '@mui/icons-material/Person';
 import LockIcon from '@mui/icons-material/Lock';
-import { useState} from 'react';
+import { useState,useContext} from 'react';
 import PhoneIcon from '@mui/icons-material/Phone';
 import Person3Icon from '@mui/icons-material/Person3';
 import { Link } from 'react-router-dom';
 import { authenticateSignup ,authenticateLogin} from '../../Service/api';
 import { useNavigate } from 'react-router-dom';
-
+import {Datacontext} from '../../Dataprovider/Dataprovider';
 const Homedisplay = styled(Box)`
     background-color:#757de8;
     widht:100%;
@@ -102,12 +102,18 @@ const logininitialValues = {
     username:'',
     password:'',
 }
+
 function Form() {
 
 const [account , toggleAccount] = useState(accntIntialvalue.login)
 const [signup ,setSignup] =useState(signUpinitialValues)
 const [login ,setLogin]=useState(logininitialValues)
 const [error , setError] =useState(false);
+
+const {setAccount}=useContext(Datacontext);
+
+
+
 const navigate = useNavigate()
 
  const toggleSignup = () => {
@@ -134,6 +140,7 @@ const loginuser = async()=>{
     console.log(response);
     if(response.status === 200){
         navigate('/home');
+        setAccount(response.data.data.name);
     }
     else{
         setError(true);
