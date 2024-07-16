@@ -1,14 +1,14 @@
 import React from 'react'
-import {styled,Box , Typography, Button , TextField, Icon} from '@mui/material'
+import {styled,Box , Typography, Button , TextField} from '@mui/material'
 import PersonIcon from '@mui/icons-material/Person';
 import LockIcon from '@mui/icons-material/Lock';
-import { useState,useContext} from 'react';
+import { useState} from 'react';
 import PhoneIcon from '@mui/icons-material/Phone';
 import Person3Icon from '@mui/icons-material/Person3';
 import { Link } from 'react-router-dom';
 import { authenticateSignup ,authenticateLogin} from '../../Service/api';
 import { useNavigate } from 'react-router-dom';
-import {Datacontext} from '../../Dataprovider/Dataprovider';
+
 const Homedisplay = styled(Box)`
     background-color:#757de8;
     widht:100%;
@@ -76,10 +76,6 @@ const Txtfld =styled(TextField)`
     marginLeft:5,
    })
 
-   const Error=styled(Typography)`
-    font-size:16px;
-    color:red;
-   `
   const accntIntialvalue = {
         login:{
             view:'login'
@@ -108,13 +104,12 @@ function Form() {
 const [account , toggleAccount] = useState(accntIntialvalue.login)
 const [signup ,setSignup] =useState(signUpinitialValues)
 const [login ,setLogin]=useState(logininitialValues)
-const [error , setError] =useState(false);
-
-const {setAccount}=useContext(Datacontext);
-
-
-
 const navigate = useNavigate()
+
+
+
+
+
 
  const toggleSignup = () => {
     toggleAccount(accntIntialvalue.signup)
@@ -131,20 +126,18 @@ const navigate = useNavigate()
  
 
  const toggleLoginData = (e) => {
-        setLogin({...login,[e.target.name]:e.target.value})
+        setLogin({...login , [e.target.name]:e.target.value})
  }
 
 
 const loginuser = async()=>{
     let response = await authenticateLogin(login)
     console.log(response);
-    if(response.status === 200){
-        navigate('/home');
-        setAccount(response.data.data.name);
-    }
-    else{
-        setError(true);
-    }
+    if(response.status===200) 
+        {
+            navigate('/home');
+        }
+  
 }
 
   return (
@@ -184,7 +177,6 @@ const loginuser = async()=>{
 
                 <Box>
                     <Btn onClick={()=>loginuser()}>Login</Btn>
-                   {error && <Error>Please enter valid username or password</Error>}
                 </Box>
                 <Box style={{display:'flex',paddingTop:20,alignItems:'center',marginLeft:25}}>
                 <Box>

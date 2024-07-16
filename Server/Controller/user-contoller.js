@@ -1,5 +1,7 @@
 
 import User from "../Model/userSchema.js"
+import Conversation from "../Model/Conversation.js"
+
 
 export const userSignup = async (request ,response) =>{
         try{
@@ -35,7 +37,32 @@ export const userLogin = async(request,response)=>{
                 return response.status(401).json('invalid login')
             }
 
-    }catch(error){
+    }  catch(error)  {
                 response.status(500).json("Error",error.message);
+    }
+}
+
+export const userConversation = async(request,response) => {
+    try{
+            const{senderId , receiverId}=request.body;
+            const newConversation = new Conversation({members : [senderId , receiverId]});
+            await newConversation.save();
+            response.status(200).send('Conversation created successfully');
+    }catch(error){
+            console.log(error,'Error');
+    }
+}
+
+export const userMessages = async(request,response) => {
+    try{
+            const userId=request.params.body;
+            const conversation = await Conversation.find({members:{$in : [userId]}});
+            const conversationUserdata = conversation.map( async (chat) => {
+                const receiverId = conversation.members.find((member)=> member!=userId);
+                return await User.findById(receiverId);
+            })
+            response.status(200).json(conversation);
+    }catch(error){
+            console.log(error,'Error');
     }
 }

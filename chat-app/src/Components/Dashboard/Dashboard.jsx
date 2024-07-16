@@ -2,8 +2,7 @@ import React from 'react'
 import { Box ,styled ,Typography} from '@mui/material'
 import { ChatList } from '../../Chatlist.js'
 import Chatting from './Chatting.jsx'
-import { useContext } from 'react'
-import { Datacontext} from '../../Dataprovider/Dataprovider.jsx'
+
 
 const Container =styled(Box)`
     display:flex;
@@ -64,7 +63,7 @@ const MessageBox = styled(Box)`
 
 function Dashboard() {
 
-    const {account} = useContext(Datacontext)
+   
   return (
     <Container>
       <Chatlist>
@@ -74,7 +73,7 @@ function Dashboard() {
             <Dp src="https://www.shareicon.net/download/2016/05/24/770136_man_512x512.png" alt="Profile" />
             </Box>
             <Box>
-                <Box><Typography style={{fontSize:18 , fontWeight:700 , color:"#ede7f6"}}>{account}</Typography></Box>
+                <Box><Typography style={{fontSize:18 , fontWeight:700 , color:"#ede7f6"}}>Alex</Typography></Box>
                 <Box><Typography style={{fontSize:12 , fontWeight:200 ,color:"#ede7f6"}}>My Account</Typography></Box>
             </Box>
             </DpData>
