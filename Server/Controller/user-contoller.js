@@ -57,11 +57,12 @@ export const userMessages = async(request,response) => {
     try{
             const userId=request.params.body;
             const conversation = await Conversation.find({members:{$in : [userId]}});
-            const conversationUserdata = conversation.map( async (chat) => {
+            const conversationUserdata = Promise.all( conversation.map( async (chat) => {
                 const receiverId = conversation.members.find((member)=> member!=userId);
-                return await User.findById(receiverId);
-            })
-            response.status(200).json(conversation);
+                const usermsg= await User.findById(receiverId);
+                return{  user: {email:usermsg.email , name: usermsg.name} , conversationID: conversation._id}
+            })) 
+            response.status(200).json(await conversationUserdata);
     }catch(error){
             console.log(error,'Error');
     }
