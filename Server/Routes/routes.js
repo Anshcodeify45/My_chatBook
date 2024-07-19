@@ -1,5 +1,5 @@
 import express from 'express'
-import { userSignup ,userLogin,userConversation,userMessages,userMsg, getMsg} from '../Controller/user-contoller.js';
+import { userSignup ,userLogin,userConversation,userMessages,userMsg, getMsg, userData} from '../Controller/user-contoller.js';
 
 const router =express.Router();
 
@@ -9,5 +9,6 @@ router.post('/conversation',userConversation);
 router.get('/conversation/:userId',userMessages)
 router.post('/conversation/message',userMsg)
 router.get('/message/:conversationID',getMsg)
+router.get('/users',userData);
 
 export default router;

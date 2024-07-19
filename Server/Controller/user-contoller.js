@@ -98,3 +98,17 @@ export const getMsg = async(request,response)=>{
             console.log('Error',error);
     }
 }
+
+
+export const userData = async (request,response) =>{
+    try{
+            const users = await User.find();
+            const Data = Promise.all(users.map(async(user) =>{
+                return { user : { username: user.username , fullname:user.name}, userId:user._id}
+            }))
+
+            response.status(200).json(await Data);
+    }catch(error){
+            console.log('Error',error);
+    }
+}
