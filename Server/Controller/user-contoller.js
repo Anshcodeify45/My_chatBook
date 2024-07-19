@@ -1,6 +1,8 @@
 
 import User from "../Model/userSchema.js"
 import Conversation from "../Model/Conversation.js"
+import { request, response } from "express"
+import Messages from "../Model/Messages.js"
 
 
 export const userSignup = async (request ,response) =>{
@@ -44,26 +46,55 @@ export const userLogin = async(request,response)=>{
 
 export const userConversation = async(request,response) => {
     try{
-            const{senderId , receiverId}=request.body;
-            const newConversation = new Conversation({members : [senderId , receiverId]});
+            const {senderId , receiverId} = request.body;
+            const newConversation = new Conversation({ members : [senderId , receiverId] });
             await newConversation.save();
             response.status(200).send('Conversation created successfully');
     }catch(error){
-            console.log(error,'Error');
+             response.status(500).json("Error",error.message);
     }
 }
 
 export const userMessages = async(request,response) => {
     try{
-            const userId=request.params.body;
+            const userId=request.params.userId;
             const conversation = await Conversation.find({members:{$in : [userId]}});
             const conversationUserdata = Promise.all( conversation.map( async (chat) => {
-                const receiverId = conversation.members.find((member)=> member!=userId);
+                const receiverId = chat.members.find((member)=> member !== userId);
                 const usermsg= await User.findById(receiverId);
-                return{  user: {email:usermsg.email , name: usermsg.name} , conversationID: conversation._id}
+                return{  user: {username:usermsg.username , name: usermsg.name} , conversationID: chat._id}
             })) 
             response.status(200).json(await conversationUserdata);
     }catch(error){
             console.log(error,'Error');
+    }
+}
+
+
+export const userMsg = async( request,response) => {
+    try{
+            const {conversationID ,senderId , message} = request.body;
+            const newMsg = new Messages({conversationID,senderId,message});
+            await newMsg.save();
+            response.status(200).send('Message sent successfully');
+    }catch(error){
+        console.log(error,'Error');
+    }
+}
+
+
+export const getMsg = async(request,response)=>{
+    try{
+            const conversationID = request.params.conversationID;
+            const msg = await Messages.find({conversationID});
+            const msgerData = Promise.all(msg.map(async(message) => {
+                const userDt = await User.findById(message.senderId);
+                return {user: {username:userDt.username,name:userDt.name},message:message.message}
+            }));
+
+            response.status(200).json(await msgerData);
+
+    }catch(error){
+            console.log('Error',error);
     }
 }
