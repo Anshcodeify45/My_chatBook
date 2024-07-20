@@ -74,6 +74,18 @@ export const userMessages = async(request,response) => {
 export const userMsg = async( request,response) => {
     try{
             const {conversationID ,senderId , message} = request.body;
+            if(!senderId || !message) return response.status(400).send('Pleaser fill the form')
+                if(!conversationID && receiverId){
+                    const newConversation = new Conversation({members : [senderId , receiverId]});
+                    await newConversation.save();
+                    const newMessage = new Messages({conversationID:newConversation._id , senderId , message});
+                    await newMessage.save();
+                    return response.status(200).send('Message sent successfully');
+                }else if(!conversationID && !receiverId){
+                    return response.status(400).send('Please fill the required from');
+                }
+
+
             const newMsg = new Messages({conversationID,senderId,message});
             await newMsg.save();
             response.status(200).send('Message sent successfully');
@@ -86,6 +98,7 @@ export const userMsg = async( request,response) => {
 export const getMsg = async(request,response)=>{
     try{
             const conversationID = request.params.conversationID;
+            if(conversationID === 'new') return response.status(200).json([])
             const msg = await Messages.find({conversationID});
             const msgerData = Promise.all(msg.map(async(message) => {
                 const userDt = await User.findById(message.senderId);
