@@ -3,6 +3,7 @@ import User from "../Model/userSchema.js"
 import Conversation from "../Model/Conversation.js"
 import { request, response } from "express"
 import Messages from "../Model/Messages.js"
+import user from "../Model/userSchema.js"
 
 
 export const userSignup = async (request ,response) =>{
@@ -30,7 +31,7 @@ export const userLogin = async(request,response)=>{
             const username=request.body.username;
             const password=request.body.password;
 
-            let user = await User.findOne({username:username , password:password});
+            let user = await User.findOne({username:username ,password:password});
 
             if(user){
                 return response.status(200).json({data:user})

@@ -2,12 +2,13 @@ import React from 'react'
 import {styled,Box , Typography, Button , TextField} from '@mui/material'
 import PersonIcon from '@mui/icons-material/Person';
 import LockIcon from '@mui/icons-material/Lock';
-import { useState} from 'react';
+import { useState ,useContext} from 'react';
 import PhoneIcon from '@mui/icons-material/Phone';
 import Person3Icon from '@mui/icons-material/Person3';
 import { Link } from 'react-router-dom';
 import { authenticateSignup ,authenticateLogin} from '../../Service/api';
 import { useNavigate } from 'react-router-dom';
+import { DataContext } from '../../Context/Dataprovider';
 
 const Homedisplay = styled(Box)`
     background-color:#757de8;
@@ -105,6 +106,7 @@ const [account , toggleAccount] = useState(accntIntialvalue.login)
 const [signup ,setSignup] =useState(signUpinitialValues)
 const [login ,setLogin]=useState(logininitialValues)
 const navigate = useNavigate()
+const { setAccount} = useContext(DataContext);
 
 
 
@@ -118,6 +120,7 @@ const navigate = useNavigate()
   let response=  await authenticateSignup(signup);
   if(!response) return
   toggleAccount(accntIntialvalue.login)
+  setAccount(signup.name);
  }
  const oninputChange = (e) =>{
     setSignup({...signup,[e.target.name]:e.target.value })
@@ -136,9 +139,12 @@ const loginuser = async()=>{
     if(response.status===200) 
         {
             navigate('/home');
+            setAccount(response.data.data.name)
         }
   
 }
+
+
 
   return (
     

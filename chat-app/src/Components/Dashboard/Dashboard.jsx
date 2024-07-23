@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Box ,styled ,Typography} from '@mui/material'
 import { ChatList } from '../../Chatlist.js'
 import Chatting from './Chatting.jsx'
+import { useState , useEffect} from 'react';
+import {authenticateLogin} from '../../Service/api';
+import { DataContext } from '../../Context/Dataprovider.jsx';
 
 
 const Container =styled(Box)`
@@ -60,8 +63,28 @@ const MessageBox = styled(Box)`
     padding-top:24px;
     color:#ede7f6;
 `
-
+// const data = {
+//     name:'',
+//     username:'',
+// }
 function Dashboard() {
+
+   const[user , setUser] =useState(null);
+
+   const {account}= useContext(DataContext);
+   useEffect(()=>{
+    const fetchUser = async () =>{
+        try{
+            const result = await authenticateLogin();
+                 let data =setUser(result);
+            console.log(data);
+        }catch(error){
+            console.log('error while getting data',error);
+        }
+       
+    }
+    fetchUser();
+   },[]);
 
    
   return (
@@ -73,7 +96,7 @@ function Dashboard() {
             <Dp src="https://www.shareicon.net/download/2016/05/24/770136_man_512x512.png" alt="Profile" />
             </Box>
             <Box>
-                <Box><Typography style={{fontSize:18 , fontWeight:700 , color:"#ede7f6"}}>Alex</Typography></Box>
+                <Box><Typography style={{fontSize:18 , fontWeight:700 , color:"#ede7f6"}}>{account}</Typography></Box>
                 <Box><Typography style={{fontSize:12 , fontWeight:200 ,color:"#ede7f6"}}>My Account</Typography></Box>
             </Box>
             </DpData>
