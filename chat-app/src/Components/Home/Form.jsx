@@ -8,7 +8,7 @@ import Person3Icon from '@mui/icons-material/Person3';
 import { Link } from 'react-router-dom';
 import { authenticateSignup ,authenticateLogin} from '../../Service/api';
 import { useNavigate } from 'react-router-dom';
-import { DataContext } from '../../Context/Dataprovider';
+import { DataContext} from '../../Context/Dataprovider';
 
 const Homedisplay = styled(Box)`
     background-color:#757de8;
@@ -113,6 +113,7 @@ const { setAccount} = useContext(DataContext);
 
 
 
+
  const toggleSignup = () => {
     toggleAccount(accntIntialvalue.signup)
  }
@@ -136,15 +137,13 @@ const { setAccount} = useContext(DataContext);
 const loginuser = async()=>{
     let response = await authenticateLogin(login)
     console.log(response);
-    if(response.status===200) 
+    if(response.status === 200) 
         {
             navigate('/home');
-            setAccount(response.data.data.name)
+            setAccount({id:response.data.data._id , name:response.data.data.name})
         }
   
 }
-
-
 
   return (
     

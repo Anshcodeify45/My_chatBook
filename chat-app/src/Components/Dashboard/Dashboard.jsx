@@ -1,9 +1,7 @@
 import React, { useContext } from 'react'
 import { Box ,styled ,Typography} from '@mui/material'
-import { ChatList } from '../../Chatlist.js'
 import Chatting from './Chatting.jsx'
 import { useState , useEffect} from 'react';
-import {authenticateLogin} from '../../Service/api';
 import { DataContext } from '../../Context/Dataprovider.jsx';
 
 
@@ -63,29 +61,34 @@ const MessageBox = styled(Box)`
     padding-top:24px;
     color:#ede7f6;
 `
-// const data = {
-//     name:'',
-//     username:'',
-// }
+
 function Dashboard() {
 
-   const[user , setUser] =useState(null);
 
    const {account}= useContext(DataContext);
-   useEffect(()=>{
-    const fetchUser = async () =>{
-        try{
-            const result = await authenticateLogin();
-                 let data =setUser(result);
-            console.log(data);
-        }catch(error){
-            console.log('error while getting data',error);
-        }
-       
-    }
-    fetchUser();
-   },[]);
+ 
+   const [conversation , setConversation] = useState([]);
+   
 
+   useEffect(() => {
+    
+    const fetchConversations = async() =>{
+        if(account.id !== null){
+            const res = await fetch(`http://localhost:8000/conversation/${account.id}`, {
+                method: 'GET',
+                headers:{
+                    'Content-Type' : 'application/json',
+                },
+            });
+            const result = await res.json();
+            setConversation(result); 
+        }
+        
+    }
+
+    fetchConversations();
+   },[account.id])
+   console.log("Conversation Data here>>",conversation);
    
   return (
     <Container>
@@ -96,7 +99,7 @@ function Dashboard() {
             <Dp src="https://www.shareicon.net/download/2016/05/24/770136_man_512x512.png" alt="Profile" />
             </Box>
             <Box>
-                <Box><Typography style={{fontSize:18 , fontWeight:700 , color:"#ede7f6"}}>{account}</Typography></Box>
+                <Box><Typography style={{fontSize:18 , fontWeight:700 , color:"#ede7f6"}}>{account.name}</Typography></Box>
                 <Box><Typography style={{fontSize:12 , fontWeight:200 ,color:"#ede7f6"}}>My Account</Typography></Box>
             </Box>
             </DpData>
@@ -106,17 +109,17 @@ function Dashboard() {
         </MessageBox>
         <Chatlists>
             {
-                ChatList.map(el => (
+                conversation.map(({conversationID ,user}) => (
                   
                     
                     <Chat>
                     <DpData>
                     <Box style={{width:"16%" , paddingRight:20}}>
-                    <Dp src={el.dp} alt="Profile" />
+                    <Dp src='https://png.pngtree.com/png-clipart/20230824/original/pngtree-boy-avatar-in-round-web-button-isolated-on-white-picture-image_8377276.png' alt="Profile" />
                     </Box>
                     <Box>
-                        <Box><Typography style={{fontSize:18 , fontWeight:700 , color:"#ede7f6"}}>{el.name}</Typography></Box>
-                        <Box><Typography style={{fontSize:12 , fontWeight:200 ,color:"#ede7f6"}}>{el.status}</Typography></Box>
+                        <Box><Typography style={{fontSize:18 , fontWeight:700 , color:"#ede7f6"}}>{user.name}</Typography></Box>
+                        <Box><Typography style={{fontSize:12 , fontWeight:200 ,color:"#ede7f6"}}>{user.username}</Typography></Box>
                     </Box>
                     </DpData>
                 </Chat>
