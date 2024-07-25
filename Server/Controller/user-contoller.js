@@ -103,7 +103,7 @@ export const getMsg = async(request,response)=>{
             const msg = await Messages.find({conversationID});
             const msgerData = Promise.all(msg.map(async(message) => {
                 const userDt = await User.findById(message.senderId);
-                return {user: {username:userDt.username,name:userDt.name},message:message.message}
+                return {user: {id:userDt._id ,username:userDt.username,name:userDt.name},message:message.message}
             }));
 
             response.status(200).json(await msgerData);

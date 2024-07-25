@@ -68,7 +68,7 @@ function Dashboard() {
    const {account}= useContext(DataContext);
  
    const [conversation , setConversation] = useState([]);
-   
+   const [msg ,setMsgs] = useState([]);
 
    useEffect(() => {
     
@@ -89,6 +89,20 @@ function Dashboard() {
     fetchConversations();
    },[account.id])
    console.log("Conversation Data here>>",conversation);
+
+
+
+   const fetchMessages = async(conversationID) =>{
+            const result = await fetch(`http://localhost:8000/message/${conversationID}`,{
+                method: 'GET',
+                headers:{
+                    'Content-Type' : 'application/json',
+                },
+            });
+            const resDATA = await result.json();
+            console.log('messages>>',resDATA);
+            setMsgs(resDATA);
+   }
    
   return (
     <Container>
@@ -109,10 +123,12 @@ function Dashboard() {
         </MessageBox>
         <Chatlists>
             {
+
+                conversation.length > 0 ?
                 conversation.map(({conversationID ,user}) => (
                   
                     
-                    <Chat>
+                    <Chat onClick={() => fetchMessages(conversationID)}>
                     <DpData>
                     <Box style={{width:"16%" , paddingRight:20}}>
                     <Dp src='https://png.pngtree.com/png-clipart/20230824/original/pngtree-boy-avatar-in-round-web-button-isolated-on-white-picture-image_8377276.png' alt="Profile" />
@@ -126,7 +142,7 @@ function Dashboard() {
 
 
 
-                ))
+                )) : <Box> <Typography> No Chats </Typography> </Box>
             }
         </Chatlists>
       </Chatlist>
