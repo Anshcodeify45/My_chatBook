@@ -69,6 +69,7 @@ function Dashboard() {
  
    const [conversation , setConversation] = useState([]);
    const [msg ,setMsgs] = useState([]);
+   const [profile ,setProfile] = useState('');
 
    useEffect(() => {
     
@@ -85,14 +86,15 @@ function Dashboard() {
         }
         
     }
-
+    console.log("Login_id>>>>>",account.id)
     fetchConversations();
    },[account.id])
-   console.log("Conversation Data here>>",conversation);
+  
 
 
 
-   const fetchMessages = async(conversationID) =>{
+
+   const fetchMessages = async(conversationID ,user) =>{
             const result = await fetch(`http://localhost:8000/message/${conversationID}`,{
                 method: 'GET',
                 headers:{
@@ -100,9 +102,15 @@ function Dashboard() {
                 },
             });
             const resDATA = await result.json();
-            console.log('messages>>',resDATA);
+            
             setMsgs(resDATA);
+            setProfile(user.name);
+            
+            
+            
    }
+   console.log("Conversation Data here>>",msg);
+   console.log('users>>',profile);
    
   return (
     <Container>
@@ -128,7 +136,7 @@ function Dashboard() {
                 conversation.map(({conversationID ,user}) => (
                   
                     
-                    <Chat onClick={() => fetchMessages(conversationID)}>
+                    <Chat onClick={() => fetchMessages(conversationID ,user)}>
                     <DpData>
                     <Box style={{width:"16%" , paddingRight:20}}>
                     <Dp src='https://png.pngtree.com/png-clipart/20230824/original/pngtree-boy-avatar-in-round-web-button-isolated-on-white-picture-image_8377276.png' alt="Profile" />
@@ -146,7 +154,11 @@ function Dashboard() {
             }
         </Chatlists>
       </Chatlist>
-      <Chatbox> <Chatting/></Chatbox>
+      <Chatbox> 
+
+         {React.cloneElement(<Chatting messeges={msg}/> , {profile})}    
+
+        </Chatbox>
     </Container>
   )
 }

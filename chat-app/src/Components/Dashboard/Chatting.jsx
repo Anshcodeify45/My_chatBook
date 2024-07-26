@@ -4,7 +4,8 @@ import AddIcCallIcon from '@mui/icons-material/AddIcCall';
 import SendIcon from '@mui/icons-material/Send';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import AddIcon from '@mui/icons-material/Add';
-
+import { DataContext } from '../../Context/Dataprovider';
+import { useContext } from 'react';
 
 
 const Container =styled(Box)`
@@ -101,116 +102,72 @@ const IcnBox = styled(Box)`
       align-items:center;
       padding-right:20px;
 `
-function Chatting() {
+function Chatting({messeges ,profile}) {
+      const {account}= useContext(DataContext);
+      
+     
   return (
     <Container>
-      <Profile>
+          <Profile>
           <Myprofile>
             <DataBox>
             <DPbox>
-               <Dp src="https://www.shareicon.net/download/2016/05/24/770136_man_512x512.png" alt="Profile" />
+                  <Dp src="https://www.shareicon.net/download/2016/05/24/770136_man_512x512.png" alt="Profile" />
             </DPbox>
             <Box>
-              <Box><Typography variant='h5' style={{fontSize:18 , fontWeight:500}}>Alex</Typography></Box>
-              <Box><Typography variant='p' style={{fontSize:15 , fontWeight:100}}>Online</Typography></Box>  
-            </Box>
-            </DataBox>
+            <Box><Typography variant='h5' style={{fontSize:18 , fontWeight:500}}>{profile}</Typography></Box>
+            <Box><Typography variant='p' style={{fontSize:15 , fontWeight:100}}>Online</Typography></Box>  
+           </Box>
+          </DataBox>
             <CallIcon>
-              <AddIcCallIcon/>
+            <AddIcCallIcon/>
             </CallIcon>
-          </Myprofile>
-          
+            </Myprofile>
       </Profile>
-
-      <Chats>
-        <Mychats>
-          <Typography variant='p'>
-            The sun dipped below the horizon, casting a warm, golden hue across the tranquil lake. Birds chirped their final songs.
-          
-           </Typography>
-        </Mychats>
-
-        <Replies>
-          <Typography variant='p'>
-              Birds chirped their final songs of the day as a gentle breeze rustled the leaves of the nearby trees. On the water's surface.
-           </Typography>
-        </Replies>
-
-        <Mychats>
-          <Typography variant='p'>
-            The sun dipped below the horizon, casting a warm, golden hue across the tranquil lake. Birds chirped their final songs 
-           </Typography>
-        </Mychats>
-
-        <Replies>
-          <Typography variant='p'>
-             Birds chirped their final songs of the day as a gentle breeze rustled the leaves of the nearby trees. On the water's surface.
-           </Typography>
-        </Replies>
-
-        <Mychats>
-          <Typography variant='p'>
-            The sun dipped below the horizon, casting a warm, golden hue across the tranquil lake. Birds chirped their final songs 
-           </Typography>
-        </Mychats>
-
-        <Replies>
-          <Typography variant='p'>
-             Birds chirped their final songs of the day as a gentle breeze rustled the leaves of the nearby trees. On the water's surface.
-           </Typography>
-        </Replies>
-
-        <Mychats>
-          <Typography variant='p'>
-            The sun dipped below the horizon, casting a warm, golden hue across the tranquil lake. Birds chirped their final songs 
-           </Typography>
-        </Mychats>
+       <Chats>
+      { 
+        messeges.map(({user :{ id}={} , message } ) =>{
+                
+                  if(id === account.id) {
+                        return (
+                       
+                        <Mychats>
+                        <Typography variant='p'>
+                              {message}
+                        </Typography>
+                        </Mychats>
+                         
+                        )
+                        } else {
+                        return(
+                        <Replies>
+                        <Typography variant='p'>
+                              {message}
+                        </Typography>
+                        </Replies>
+                        )
+                        }      
+      })}
        
-        <Replies>
-          <Typography variant='p'>
-             Birds chirped their final songs of the day as a gentle breeze rustled the leaves of the nearby trees. On the water's surface.
-           </Typography>
-        </Replies>
+       <Inputchat>
+                  <Box>
+                  <EmojiEmotionsIcon style={{cursor:"pointer" , paddingRight:10}}/>
+                  </Box>
+                  <Box>
+                  <InputData variant='outlined' placeholder='Message'/>
+                  </Box>
 
-        <Mychats>
-          <Typography variant='p'>
-            The sun dipped below the horizon, casting a warm, golden hue across the tranquil lake. Birds chirped their final songs 
-           </Typography>
-        </Mychats>
-
-        <Replies>
-          <Typography variant='p'>
-             Birds chirped their final songs of the day as a gentle breeze rustled the leaves of the nearby trees. On the water's surface.
-           </Typography>
-        </Replies>
-
-        <Mychats>
-          <Typography variant='p'>
-            The sun dipped below the horizon, casting a warm, golden hue across the tranquil lake. Birds chirped their final songs 
-           </Typography>
-        </Mychats>
-        
-      </Chats>
-      <Inputchat>
-          <Box>
-            <EmojiEmotionsIcon style={{cursor:"pointer" , paddingRight:10}}/>
-          </Box>
-        <Box>
-        <InputData variant='outlined' placeholder='Message'/>
-        </Box>
-        
-        <IcnBox>
-        <Box>
-         <SendIcon style={{cursor:"pointer" , paddingRight:10}}/>
-        </Box>
-          <Box>
-            <AddIcon style={{cursor:"pointer" , paddingRight:10}}/>
-          </Box>
-        </IcnBox>
-        
-       
-        
+                  <IcnBox>
+                  <Box>
+                  <SendIcon style={{cursor:"pointer" , paddingRight:10}}/>
+                  </Box>
+                  <Box>
+                  <AddIcon style={{cursor:"pointer" , paddingRight:10}}/>
+                  </Box>
+                  </IcnBox>    
       </Inputchat>
+      </Chats>
+            
     </Container>
   )
 }
