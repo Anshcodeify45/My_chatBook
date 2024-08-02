@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Box ,styled ,Typography ,InputBase} from '@mui/material'
 import AddIcCallIcon from '@mui/icons-material/AddIcCall';
 import SendIcon from '@mui/icons-material/Send';
@@ -102,9 +102,30 @@ const IcnBox = styled(Box)`
       align-items:center;
       padding-right:20px;
 `
-function Chatting({messeges ,profile}) {
+function Chatting({Allmsg ,profile,conversation,receiver}) {
       const {account}= useContext(DataContext);
+      const [mesg , setMsg] = useState('');
+
       
+      console.log(account);
+      const sendMessage = async(e) => {
+            
+                  const res = await fetch(`http://localhost:8000/conversation/message`,{
+                        method:'POST',
+                        headers:{
+                              'Content-Type':'application/json',
+                        },
+                        body: JSON.stringify({
+                              conversationID:conversation,
+                              senderId: account?.id,
+                              message:mesg,
+                              receiverId:receiver,
+                        })
+
+                  });
+                  setMsg('');
+      }
+      console.log("my name>>",{profile})
      
   return (
     <Container>
@@ -126,25 +147,25 @@ function Chatting({messeges ,profile}) {
       </Profile>
        <Chats>
       { 
-        messeges.map(({user :{ id}={} , message } ) =>{
+        Allmsg.map(({user :{ id}={} , message } ) =>{
                 
                   if(id === account.id) {
                         return (
                        
-                        <Mychats>
-                        <Typography variant='p'>
-                              {message}
-                        </Typography>
-                        </Mychats>
-                         
-                        )
-                        } else {
-                        return(
                         <Replies>
                         <Typography variant='p'>
                               {message}
                         </Typography>
                         </Replies>
+                         
+                        )
+                        } else {
+                        return(
+                        <Mychats>
+                        <Typography variant='p'>
+                              {message}
+                        </Typography>
+                        </Mychats>
                         )
                         }      
       })}
@@ -154,12 +175,12 @@ function Chatting({messeges ,profile}) {
                   <EmojiEmotionsIcon style={{cursor:"pointer" , paddingRight:10}}/>
                   </Box>
                   <Box>
-                  <InputData variant='outlined' placeholder='Message'/>
+                  <InputData variant='outlined' placeholder='Message' value={mesg} onChange={(e) => setMsg(e.target.value)}/>
                   </Box>
 
                   <IcnBox>
                   <Box>
-                  <SendIcon style={{cursor:"pointer" , paddingRight:10}}/>
+                  <SendIcon style={{cursor:"pointer" , paddingRight:10}} onClick = {() => sendMessage()}/>
                   </Box>
                   <Box>
                   <AddIcon style={{cursor:"pointer" , paddingRight:10}}/>

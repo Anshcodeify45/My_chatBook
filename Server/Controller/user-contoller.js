@@ -63,7 +63,7 @@ export const userMessages = async(request,response) => {
             const conversationUserdata = Promise.all( conversation.map( async (chat) => {
                 const receiverId = chat.members.find((member)=> member !== userId);
                 const usermsg= await User.findById(receiverId);
-                return{  user: {username:usermsg.username , name: usermsg.name} , conversationID: chat._id}
+                return{  user: {username:usermsg.username , name: usermsg.name ,receiverId: usermsg._id} , conversationID: chat._id}
             })) 
             response.status(200).json(await conversationUserdata);
     }catch(error){
@@ -74,7 +74,7 @@ export const userMessages = async(request,response) => {
 
 export const userMsg = async( request,response) => {
     try{
-            const {conversationID ,senderId , message} = request.body;
+            const {conversationID ,senderId , message ,receiverId=''} = request.body;
             if(!senderId || !message) return response.status(400).send('Pleaser fill the form')
                 if(!conversationID && receiverId){
                     const newConversation = new Conversation({members : [senderId , receiverId]});

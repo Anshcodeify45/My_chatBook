@@ -70,6 +70,8 @@ function Dashboard() {
    const [conversation , setConversation] = useState([]);
    const [msg ,setMsgs] = useState([]);
    const [profile ,setProfile] = useState('');
+   const [convid ,setConvid] = useState('');
+   const [rcverId ,setRcverId] =useState('');
 
    useEffect(() => {
     
@@ -86,7 +88,6 @@ function Dashboard() {
         }
         
     }
-    console.log("Login_id>>>>>",account.id)
     fetchConversations();
    },[account.id])
   
@@ -105,12 +106,13 @@ function Dashboard() {
             
             setMsgs(resDATA);
             setProfile(user.name);
-            
-            
-            
+            setConvid(conversationID);
+            setRcverId(user.receiverId);
+                 
    }
-   console.log("Conversation Data here>>",msg);
-   console.log('users>>',profile);
+   console.log("msg DATA>>>>",msg)
+   console.log("Conversation ID>>",convid);
+  
    
   return (
     <Container>
@@ -156,7 +158,7 @@ function Dashboard() {
       </Chatlist>
       <Chatbox> 
 
-         {React.cloneElement(<Chatting messeges={msg}/> , {profile})}    
+         {React.cloneElement(<Chatting conversation={convid} receiver={rcverId} Allmsg= {msg}/> ,{profile})}    
 
         </Chatbox>
     </Container>
