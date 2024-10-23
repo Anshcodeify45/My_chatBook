@@ -7,20 +7,16 @@ import { DataContext } from '../../Context/Dataprovider.jsx';
 
 const Container =styled(Box)`
     display:flex;
-    padding-top:58px;
-     position:fixed;
+    position:fixed;
 `
 const Chatlist = styled(Box)`
-    width:25%;
-    background-color:#757de8;
-    max-height:98vh;
-   
-
+    width:23%;
+    background-color:#004d40;
+    height:100vh;
 `
 const Chatbox = styled(Box)`
-    width:75%;
-    background-color:#d1c4e9;
-    max-height:100vh;
+    width:60%;
+    height:99vh;
 `
 
 const Dp = styled('img')({
@@ -31,6 +27,8 @@ const Dp = styled('img')({
 const DpData = styled(Box)`
     display: flex;
     align-items:center;
+    background-color:#004d40;
+
 `
 const Myprofile = styled(Box)`
      padding-top:11px;
@@ -38,7 +36,7 @@ const Myprofile = styled(Box)`
      padding-left:65px; 
      border-bottom:2px solid;
      border-color:#ede7f6;
-     background-color:#673ab7;
+     background-color:#004d40;
      cursor:pointer;
 `
 const Chat = styled(Box)`
@@ -47,19 +45,27 @@ const Chat = styled(Box)`
      padding-left:20px; 
      border-bottom:2px solid;
      border-color:#ede7f6;
-     background-color:#673ab7;
+     background-color:#004d40;
      cursor:pointer;
      
 `
-const Chatlists=styled(Box)`
-     max-height:74vh;
-     overflow-y:scroll;
-`
+const Chatlists=styled(Box)({
+     maxHeight:'74vh',
+     overflowY:'scroll',
+     '&::-webkit-scrollbar': {
+    display:'none', // Hide scrollbar for Chrome, Safari, and Opera
+  }
+})
 const MessageBox = styled(Box)`
-    background-color:#673ab7;
+    background-color:#004d40;
     padding-left:30px;
     padding-top:24px;
     color:#ede7f6;
+`
+const RIghtBox = styled(Box)`
+    width:19%;
+    background-color:#004d40;
+    height:100vh;
 `
 
 function Dashboard() {
@@ -72,6 +78,7 @@ function Dashboard() {
    const [profile ,setProfile] = useState('');
    const [convid ,setConvid] = useState('');
    const [rcverId ,setRcverId] =useState('');
+   const [users,setUsers] = useState([]);
 
    useEffect(() => {
     
@@ -92,7 +99,19 @@ function Dashboard() {
    },[account.id])
   
 
-
+   useEffect(() =>{
+        const fetchUsers = async()=>{
+            const res =await fetch(`http://localhost:8000/users`,{
+                method:'GET',
+                headers:{
+                    'Content-Type':'application/json'
+                }
+            });
+            const resData = await res.json();
+            setUsers(resData);
+        }
+        fetchUsers();
+   },[])
 
 
    const fetchMessages = async(conversationID ,user) =>{
@@ -110,8 +129,11 @@ function Dashboard() {
             setRcverId(user.receiverId);
                  
    }
+
+
    console.log("msg DATA>>>>",msg)
    console.log("Conversation ID>>",convid);
+   console.log("Users>>",users);
   
    
   return (
@@ -156,11 +178,38 @@ function Dashboard() {
             }
         </Chatlists>
       </Chatlist>
+
       <Chatbox> 
 
          {React.cloneElement(<Chatting conversation={convid} receiver={rcverId} Allmsg= {msg}/> ,{profile})}    
 
         </Chatbox>
+
+
+        <RIghtBox>
+             {
+
+                users.length > 0 ?
+                users.map(({userId ,user}) => (
+                  
+                    
+                    <Chat onClick={() => fetchMessages('new' ,user)}>
+                    <DpData>
+                    <Box style={{width:"16%" , paddingRight:20}}>
+                    <Dp src='https://png.pngtree.com/png-clipart/20230824/original/pngtree-boy-avatar-in-round-web-button-isolated-on-white-picture-image_8377276.png' alt="Profile" />
+                    </Box>
+                    <Box>
+                        <Box><Typography style={{fontSize:18 , fontWeight:700 , color:"#ede7f6"}}>{user.fullname}</Typography></Box>
+                        <Box><Typography style={{fontSize:12 , fontWeight:200 ,color:"#ede7f6"}}>{user.username}</Typography></Box>
+                    </Box>
+                    </DpData>
+                </Chat>
+
+
+
+                )) : <Box> <Typography> No Chats </Typography> </Box>
+            }
+       </RIghtBox>
     </Container>
   )
 }

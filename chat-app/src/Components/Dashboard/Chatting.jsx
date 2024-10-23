@@ -9,17 +9,22 @@ import { useContext } from 'react';
 
 
 const Container =styled(Box)`
-    width:100%;
     postion:sticky;
+    height:100vh;
+    width:100%;
+    
+    
 `
 
 const Profile = styled(Box)`
-    width:95%;
-    padding:5px 70px 0 15px;
-    background-color:#512da8;
+    width:91%;
+    height:55px;
+    padding:18px 70px 0 15px;
+    background-color:#004d40;
     color:#ede7f6;
     cursor:pointer;
-    box-shadow:4px 4px 2px #263238;
+
+  
 `
 
 const Dp = styled('img')({
@@ -29,8 +34,6 @@ const Dp = styled('img')({
 const Myprofile = styled(Box)`
     display:flex;
     align-items:center;
-    
-
 `
 
 const DPbox =styled(Box)`
@@ -48,8 +51,10 @@ const DataBox=styled(Box)`
       
   `
 const Chats = styled(Box)`
-      max-height:74vh;
+      height:83vh;
       overflow-y:scroll;
+      background-image:url(https://www.shutterstock.com/image-vector/social-media-sketch-vector-seamless-600nw-1660950727.jpg);
+  
 `
 const Mychats = styled(Box)`
       width:25%;
@@ -69,7 +74,7 @@ const Mychats = styled(Box)`
 const Replies = styled(Box)`
       width:25%;
       height:auto;
-      margin-left:690px;
+      margin-left:480px;
       margin-top:25px;
       background-color:#6200ea;
       padding: 20px 80px 20px 80px;
@@ -83,25 +88,28 @@ const Replies = styled(Box)`
 
 const InputData = styled(InputBase)`
       width:100%;
-      padding-right:700px;
 `
 
 const Inputchat = styled(Box)`
       display:flex;
       align-items:center;
-      border-radius:12px;
       background-color:#b388ff;
-      padding:13px 80px 12px 80px;
-      margin-top:8px;
-      width:80%;
-      margin-left:38px;
+      padding:15px 0px 7px 10px;
+      width:99%;
+      justify-content:space-evenly;
+      
 `
 
 const IcnBox = styled(Box)`
       display:flex;
       align-items:center;
-      padding-right:20px;
 `
+
+const ChatBox = styled(Box)`
+      width:100%;
+      align-items:center;
+`
+
 function Chatting({Allmsg ,profile,conversation,receiver}) {
       const {account}= useContext(DataContext);
       const [mesg , setMsg] = useState('');
@@ -129,7 +137,8 @@ function Chatting({Allmsg ,profile,conversation,receiver}) {
      
   return (
     <Container>
-          <Profile>
+      <ChatBox>
+      <Profile>
           <Myprofile>
             <DataBox>
             <DPbox>
@@ -145,6 +154,7 @@ function Chatting({Allmsg ,profile,conversation,receiver}) {
             </CallIcon>
             </Myprofile>
       </Profile>
+      <Box>
        <Chats>
       { 
         Allmsg.map(({user :{ id}={} , message } ) =>{
@@ -170,25 +180,27 @@ function Chatting({Allmsg ,profile,conversation,receiver}) {
                         }      
       })}
        
-       <Inputchat>
+      
+      </Chats>
+      <Inputchat>
                   <Box>
-                  <EmojiEmotionsIcon style={{cursor:"pointer" , paddingRight:10}}/>
+                  <EmojiEmotionsIcon style={{cursor:"pointer"}}/>
                   </Box>
-                  <Box>
+                  <Box style={{width:'70%'}}>
                   <InputData variant='outlined' placeholder='Message' value={mesg} onChange={(e) => setMsg(e.target.value)}/>
                   </Box>
 
-                  <IcnBox>
+                  <IcnBox style={{width:"15%"}}>
                   <Box>
                   <SendIcon style={{cursor:"pointer" , paddingRight:10}} onClick = {() => sendMessage()}/>
                   </Box>
                   <Box>
-                  <AddIcon style={{cursor:"pointer" , paddingRight:10}}/>
+                  <AddIcon style={{cursor:"pointer"}}/>
                   </Box>
                   </IcnBox>    
       </Inputchat>
-      </Chats>
-            
+      </Box>
+      </ChatBox>
     </Container>
   )
 }

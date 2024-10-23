@@ -4,7 +4,7 @@ import {styled,Box , AppBar,Button , Typography} from '@mui/material'
 const Nav = styled(AppBar)`
     height:58px;
     width:100%;
-    background-color:#5e35b1;
+    background-color:#004d40;
     
 `
 const Navcontain =styled(Box)`

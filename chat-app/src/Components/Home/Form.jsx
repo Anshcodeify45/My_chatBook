@@ -1,5 +1,5 @@
 import React from 'react'
-import {styled,Box , Typography, Button , TextField} from '@mui/material'
+import {styled,Box , Typography, Button , TextField, Container} from '@mui/material'
 import PersonIcon from '@mui/icons-material/Person';
 import LockIcon from '@mui/icons-material/Lock';
 import { useState ,useContext} from 'react';
@@ -10,32 +10,51 @@ import { authenticateSignup ,authenticateLogin} from '../../Service/api';
 import { useNavigate } from 'react-router-dom';
 import { DataContext} from '../../Context/Dataprovider';
 
-const Homedisplay = styled(Box)`
-    background-color:#757de8;
-    widht:100%;
+
+const MainBox =styled(Box)`
+    width:100%;
     height:100vh;
-    color:#fafafa;
+    background-color:#00695c;
 `
-const Formbx = styled(Box)`
-    display: flex;
-    justify-content: space-evenly; 
-    align-items: center;     
-    height: 60vh; 
-    padding-top:150px;
+const ChildBox = styled(Box)`
+    background-color:#00695c;
+    width:100%;
+    padding-top:60px;
 
 `
+
+ const Formbx = styled(Box)`
+    display: flex;
+    width:68%; 
+    height:62%;
+    align-items: center;     
+    margin-left:225px;
+    background-color:#fafafa;
+`
+
+const LeftBox=styled(Box)`
+    width:50%;
+    height:79vh;
+    background-color:#004d40;
+    border-top-right-radius:45%;
+    border-bottom-right-radius:45%;
+    padding-left:30px;
+`
+
+const Logo = styled('img')({
+    width:"70%",
+    paddingLeft:20,
+    paddingTop:35,
+})
 const Formbox = styled(Box)`
         border:2px;
-        border-radius:10px;  
-        background-color: rgba(0, 0, 0, 0.6);
-        
-        
+        border-radius:10px;    
 `
 const InptBox = styled(Box)`
     display:flex;
 `  
 
-const FormData =styled(Box)`
+ const FormData =styled(Box)`
    padding:80px 120px 130px 70px;
  
 
@@ -50,7 +69,7 @@ const Txtfld =styled(TextField)`
    const Btn =styled(Button)`
         margin-left:70px;
         padding:10px 50px 10px 50px;
-        background-color:#757de8;
+        background-color:#004d40;
         color:white;
         font-size:20px;
         border-radius:5px;
@@ -59,7 +78,7 @@ const Txtfld =styled(TextField)`
    const BtnLink = styled(Link)({
     marginLeft:"70px",
     padding:"10px 50px 17px 50px",
-    backgroundColor:"#757de8",
+    backgroundColor:"#004d40",
     color:"white",
     fontSize:20,
     borderRadius:5,
@@ -69,7 +88,7 @@ const Txtfld =styled(TextField)`
    const Btnlinksignup = styled(Link)({
     color:"white",
     fontSize:17,
-    backgroundColor:"#3f51b5",
+    backgroundColor:"#004d40",
     textDecoration:"none",
     alignItems:"center",
     padding:"5px 10px 7px 10px",
@@ -100,7 +119,7 @@ const logininitialValues = {
     password:'',
 }
 
-function Form() {
+  function Form() {
 
 const [account , toggleAccount] = useState(accntIntialvalue.login)
 const [signup ,setSignup] =useState(signUpinitialValues)
@@ -147,13 +166,15 @@ const loginuser = async()=>{
 
   return (
     
-    <Box>
-    <Homedisplay>
-           <Formbx>
-            <Box>
-                <Box><img src="https://cdni.iconscout.com/illustration/premium/thumb/couple-chatting-on-social-media-4431098-3692641.png" alt="Logo" /></Box>
-                <Box><p style={{fontSize:35}}>"Join Our chat app Today!"</p></Box>
-            </Box>
+    <MainBox>
+        <ChildBox>
+
+        <Formbx>
+
+            <LeftBox>
+                <Box><Logo src="https://cdni.iconscout.com/illustration/premium/thumb/couple-chatting-on-social-media-4431098-3692641.png" alt="Logo" /></Box>
+                <Box><p style={{fontSize:35,color:"#e0f2f1"}}>"Join Our chat app Today!"</p></Box>
+            </LeftBox>
             <Formbox>
               {
                 account.view === 'login'  ?
@@ -242,11 +263,12 @@ const loginuser = async()=>{
                 </FormData>
               }
             </Formbox>  
+
+
             </Formbx>
-
-    </Homedisplay>
-
-    </Box>
+        </ChildBox>
+           
+    </MainBox>
   )
 }
 
