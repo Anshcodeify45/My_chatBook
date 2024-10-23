@@ -61,12 +61,13 @@ const Mychats = styled(Box)`
       height:auto;
       margin-left:35px;
       margin-top:25px;
-      background-color:#b39ddb;
+      background-color:#186a3b;
       padding: 20px 80px 20px 80px;
       border-top-right-radius:30px;
       border-bottom-right-radius:30px;
       border-bottom-left-radius:30px;
       box-shadow:4px 4px 2px #263238;
+      color:#e8f8f5;
 
 
 `
@@ -76,12 +77,12 @@ const Replies = styled(Box)`
       height:auto;
       margin-left:480px;
       margin-top:25px;
-      background-color:#6200ea;
+      background-color:#a9dfbf;
       padding: 20px 80px 20px 80px;
       border-top-left-radius:30px;
       border-bottom-right-radius:30px;
       border-bottom-left-radius:30px;
-      color:#ede7f6;
+      color:black;
       box-shadow:4px 4px 2px #263238;
 
 `
@@ -93,7 +94,7 @@ const InputData = styled(InputBase)`
 const Inputchat = styled(Box)`
       display:flex;
       align-items:center;
-      background-color:#b388ff;
+      background-color:#d5f5e3 ;
       padding:15px 0px 7px 10px;
       width:99%;
       justify-content:space-evenly;

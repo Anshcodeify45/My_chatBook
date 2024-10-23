@@ -67,6 +67,14 @@ const RIghtBox = styled(Box)`
     background-color:#004d40;
     height:100vh;
 `
+const Rightlists=styled(Box)({
+    marginTop:"11px",
+    height:'90vh',
+    overflowY:'scroll',
+    '&::-webkit-scrollbar': {
+   display:'none', // Hide scrollbar for Chrome, Safari, and Opera
+ }
+})
 
 function Dashboard() {
 
@@ -187,7 +195,11 @@ function Dashboard() {
 
 
         <RIghtBox>
-             {
+            <Box style={{padding:"15px 30px 10px 15px",marginTop:"15px"}}>
+                <Typography style={{fontSize:"20px",color:"white"}} >Contacts</Typography>
+            </Box>
+            <Rightlists>
+                {
 
                 users.length > 0 ?
                 users.map(({userId ,user}) => (
@@ -209,6 +221,8 @@ function Dashboard() {
 
                 )) : <Box> <Typography> No Chats </Typography> </Box>
             }
+            </Rightlists>
+             
        </RIghtBox>
     </Container>
   )
