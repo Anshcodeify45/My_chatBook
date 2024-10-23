@@ -150,6 +150,7 @@ const { setAccount} = useContext(DataContext);
 
  const toggleLoginData = (e) => {
         setLogin({...login , [e.target.name]:e.target.value})
+        
  }
 
 

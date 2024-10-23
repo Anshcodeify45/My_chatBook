@@ -1,3 +1,4 @@
+
 import React, { useContext } from 'react'
 import { Box ,styled ,Typography} from '@mui/material'
 import Chatting from './Chatting.jsx'
@@ -79,7 +80,9 @@ const Rightlists=styled(Box)({
 function Dashboard() {
 
 
-   const {account}= useContext(DataContext);
+    const { account, setAccount } = useContext(DataContext);
+    const [localAccount, setLocalAccount] = useState(account);
+
  
    const [conversation , setConversation] = useState([]);
    const [msg ,setMsgs] = useState([]);
@@ -88,11 +91,22 @@ function Dashboard() {
    const [rcverId ,setRcverId] =useState('');
    const [users,setUsers] = useState([]);
 
+
+
+
+
+    useEffect(() => {
+    setLocalAccount(account);
+  }, [account]);
+
+
+   console.log("account Data>>>>>",localAccount.id);
+
    useEffect(() => {
     
     const fetchConversations = async() =>{
-        if(account.id !== null){
-            const res = await fetch(`http://localhost:8000/conversation/${account.id}`, {
+        if(localAccount.id !== null){
+            const res = await fetch(`http://localhost:8000/conversation/${localAccount.id}`, {
                 method: 'GET',
                 headers:{
                     'Content-Type' : 'application/json',
@@ -104,7 +118,7 @@ function Dashboard() {
         
     }
     fetchConversations();
-   },[account.id])
+   },[localAccount.id])
   
 
    useEffect(() =>{
@@ -153,7 +167,7 @@ function Dashboard() {
             <Dp src="https://www.shareicon.net/download/2016/05/24/770136_man_512x512.png" alt="Profile" />
             </Box>
             <Box>
-                <Box><Typography style={{fontSize:18 , fontWeight:700 , color:"#ede7f6"}}>{account.name}</Typography></Box>
+                <Box><Typography style={{fontSize:18 , fontWeight:700 , color:"#ede7f6"}}>{localAccount.name}</Typography></Box>
                 <Box><Typography style={{fontSize:12 , fontWeight:200 ,color:"#ede7f6"}}>My Account</Typography></Box>
             </Box>
             </DpData>
@@ -211,7 +225,7 @@ function Dashboard() {
                     <Dp src='https://png.pngtree.com/png-clipart/20230824/original/pngtree-boy-avatar-in-round-web-button-isolated-on-white-picture-image_8377276.png' alt="Profile" />
                     </Box>
                     <Box>
-                        <Box><Typography style={{fontSize:18 , fontWeight:700 , color:"#ede7f6"}}>{user.fullname}</Typography></Box>
+                        <Box><Typography style={{fontSize:18 , fontWeight:700 , color:"#ede7f6"}}>{user.name}</Typography></Box>
                         <Box><Typography style={{fontSize:12 , fontWeight:200 ,color:"#ede7f6"}}>{user.username}</Typography></Box>
                     </Box>
                     </DpData>

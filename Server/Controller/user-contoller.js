@@ -76,7 +76,7 @@ export const userMsg = async( request,response) => {
     try{
             const {conversationID ,senderId , message ,receiverId=''} = request.body;
             if(!senderId || !message) return response.status(400).send('Pleaser fill the form')
-                if(!conversationID && receiverId){
+                if(conversationID === "new" && receiverId){
                     const newConversation = new Conversation({members : [senderId , receiverId]});
                     await newConversation.save();
                     const newMessage = new Messages({conversationID:newConversation._id , senderId , message});
@@ -118,7 +118,7 @@ export const userData = async (request,response) =>{
     try{
             const users = await User.find();
             const Data = Promise.all(users.map(async(user) =>{
-                return { user : { username: user.username , fullname:user.name}, userId:user._id}
+                return { user : { username: user.username , name:user.name, receiverId:user._id}}
             }))
 
             response.status(200).json(await Data);
