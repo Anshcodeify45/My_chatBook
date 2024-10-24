@@ -16,7 +16,8 @@ const DataProvider = ({children}) => {
       // Effect to store account in localStorage whenever it changes
       useEffect(() => {
         if (account) {
-          localStorage.setItem('account', JSON.stringify(account));
+          const storeData =localStorage.setItem('account', JSON.stringify(account));
+          console.log("store data here",storeData);
         }
       }, [account]);
     

@@ -9,6 +9,6 @@ router.post('/conversation',userConversation);
 router.get('/conversation/:userId',userMessages)
 router.post('/conversation/message',userMsg)
 router.get('/message/:conversationID',getMsg)
-router.get('/users',userData);
+router.get('/users/:userId',userData);
 
 export default router;

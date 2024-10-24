@@ -100,7 +100,7 @@ function Dashboard() {
   }, [account]);
 
 
-   console.log("account Data>>>>>",localAccount.id);
+   
 
    useEffect(() => {
     
@@ -123,39 +123,45 @@ function Dashboard() {
 
    useEffect(() =>{
         const fetchUsers = async()=>{
-            const res =await fetch(`http://localhost:8000/users`,{
+            const res =await fetch(`http://localhost:8000/users/${localAccount?.id}`,{
                 method:'GET',
                 headers:{
-                    'Content-Type':'application/json'
+                    'Content-Type':'application/json',
                 }
             });
             const resData = await res.json();
+            console.log(resData);
             setUsers(resData);
         }
         fetchUsers();
    },[])
 
 
-   const fetchMessages = async(conversationID ,user) =>{
-            const result = await fetch(`http://localhost:8000/message/${conversationID}`,{
+   const fetchMessages = async(conversationID ,receiver) =>{
+            const result = await fetch(`http://localhost:8000/message/${conversationID}?senderId=${localAccount?.id}&&receiverId=${receiver?.receiverId}`,{
                 method: 'GET',
                 headers:{
                     'Content-Type' : 'application/json',
                 },
             });
             const resDATA = await result.json();
+            console.log("user data>>",receiver);
             
             setMsgs(resDATA);
-            setProfile(user.name);
+            setProfile(receiver.name);
             setConvid(conversationID);
-            setRcverId(user.receiverId);
+            setRcverId(receiver);
+
                  
    }
 
 
    console.log("msg DATA>>>>",msg)
    console.log("Conversation ID>>",convid);
-   console.log("Users>>",users);
+   console.log("USER ID>>>>>",localAccount.id);
+   console.log("RCVR ID>>",rcverId);
+   console.log("user dataaaaa>>",users);
+  
   
    
   return (
