@@ -75,12 +75,31 @@ export const userMessages = async(request,response) => {
 
 export const userMsg = async( request,response) => {
     try{
-            const {conversationID ,senderId , message ,receiverId ='' } = request.body;
-            if(!senderId || !message) return response.status(400).send('Pleaser fill the form')
-                if(conversationID === 'new' && receiverId){
-                    const newConversation = new Conversation({members : [senderId , receiverId]});
+            const {conversationID ,senderId , message ,receiverId =""  } = request.body;
+
+            console.log("Incoming data:", request.body);
+        
+
+            if(!senderId || !message) {
+                return response.status(400).send('Pleaser fill the form')
+            }
+           
+            const actualReceiverId = receiverId.receiverId;
+            if (!mongoose.Types.ObjectId.isValid(senderId) || !mongoose.Types.ObjectId.isValid(actualReceiverId)) {
+                console.log("Invalid ObjectId for senderId or receiverId");
+                return response.status(400).json({ error: "Invalid user IDs" });
+            }
+                if(conversationID === 'new' && actualReceiverId){
+                    
+                    const newConversation = new Conversation({
+                        members : [senderId , actualReceiverId]
+                    });
                     await newConversation.save();
-                    const newMessage = new Messages({conversationID:newConversation._id , senderId , message});
+                    const newMessage = new Messages({conversationID:newConversation._id,
+                        senderId, 
+                        message,
+                        receiverId: actualReceiverId,
+                    });
                     await newMessage.save();
                     return response.status(200).send('Message sent successfully');
                 }else if(!conversationID && !receiverId){
@@ -88,7 +107,7 @@ export const userMsg = async( request,response) => {
                 }
 
 
-            const newMsg = new Messages({conversationID,senderId,message});
+            const newMsg = new Messages({conversationID,senderId,receiverId,message});
             await newMsg.save();
             response.status(200).send('Message sent successfully');
     }catch(error){
@@ -101,30 +120,40 @@ export const getMsg = async(request,response)=>{
     
     try{    
 
+        const senderId = request.query.senderId;
+        const receiverId = request.query.receiverId;
+
+         // Log the received IDs for debugging
+         console.log("Sender ID:", senderId);
+         console.log("Receiver ID:", receiverId);
+
+          // Validate Object IDs
+        if (!mongoose.Types.ObjectId.isValid(senderId) || !mongoose.Types.ObjectId.isValid(receiverId)) {
+            console.log("Invalid ObjectId for senderId or receiverId");
+            return response.status(400).json({ error: "Invalid user IDs" });
+        }
+
         const checkMsg = async(conversationID) => {
             const msg = await Messages.find({ conversationID });
-            const msgerData = Promise.all(msg.map(async(message) => {
-
-                // if (!mongoose.Types.ObjectId.isValid(message.senderId)) {
-                //     console.warn(`Invalid senderId: ${message.senderId}`);
-                //     return null; // Skip this message
-                // }
-
-
+            const msgerData = await Promise.all(
+                msg.map( async (message) => {
                 const userDt = await User.findById(message.senderId);
-                // if (!userDt) {
-                //     console.warn(`User not found for senderId: ${message.senderId}`);
-                //     return null; // Skip this message if the user does not exist
-                // }
-
-                return {user: {id:userDt._id ,username:userDt.username,name:userDt.name},message:message.message}
+                if (!userDt) {
+                    console.warn(`User not found for senderId: ${message.senderId}`);
+                    return null; // Skip this message if the user does not exist
+                }
+                return {user: { id:userDt._id, username:userDt.username, name:userDt.name},
+                message:message.message
+            };
             }));
 
-            response.status(200).json(await msgerData);
+            const filtermsg = msgerData.filter(data => data !== null);
+
+            response.status(200).json(await filtermsg);
         }
             const conversationID = request.params.conversationID;
-            if(conversationID === 'new') {
-                    const checkConversations = await Conversation.find({ members: { $all: [request.query.senderId ,request.query.receiverId]}})
+            if(conversationID === 'new') {                 
+                    const checkConversations = await Conversation.find({ members: { $all: [senderId,receiverId]}})
                     if(checkConversations.length > 0){
                         checkMsg(checkConversations[0]._id)
                     } else {

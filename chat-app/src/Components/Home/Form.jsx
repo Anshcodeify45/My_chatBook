@@ -137,14 +137,20 @@ const { setAccount} = useContext(DataContext);
     toggleAccount(accntIntialvalue.signup)
  }
  const toggleLogin = async() => {
-  let response=  await authenticateSignup(signup);
-  if(!response) return
-  toggleAccount(accntIntialvalue.login)
-  setAccount(signup.name);
+    try{
+        let response=  await authenticateSignup(signup);
+        if(!response) return
+        toggleAccount(accntIntialvalue.login)
+        setAccount(signup.name);
+    }catch(error){
+        console.error("Signup error:", error);
+        alert("Signup failed: " + error.message);
+    }
  }
  const oninputChange = (e) =>{
     setSignup({...signup,[e.target.name]:e.target.value })
     console.log(signup);
+    navigate('/login');
  }
  
 
@@ -155,13 +161,22 @@ const { setAccount} = useContext(DataContext);
 
 
 const loginuser = async()=>{
-    let response = await authenticateLogin(login)
-    console.log(response);
-    if(response.status === 200) 
-        {
-            navigate('/home');
-            setAccount({id:response.data.data._id , name:response.data.data.name})
-        }
+    try{
+        let response = await authenticateLogin(login)
+        console.log(response);
+        if(response.status === 200) 
+            {
+                navigate('/home');
+                setAccount({id:response.data.data._id , name:response.data.data.name})
+            }else {
+                console.error("Login failed:", response.data.message);
+                alert("Login failed: " + response.data.message);
+            }
+    }catch(error){
+        console.error("Login error:", error);
+        alert("Login failed: " + error.message);
+    }
+
   
 }
 

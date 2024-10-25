@@ -4,7 +4,7 @@ import { Box ,styled ,Typography} from '@mui/material'
 import Chatting from './Chatting.jsx'
 import { useState , useEffect} from 'react';
 import { DataContext } from '../../Context/Dataprovider.jsx';
-
+import { io } from 'socket.io-client';
 
 const Container =styled(Box)`
     display:flex;
@@ -90,8 +90,23 @@ function Dashboard() {
    const [convid ,setConvid] = useState('');
    const [rcverId ,setRcverId] =useState('');
    const [users,setUsers] = useState([]);
+   const [socket , setSocket] = useState(null);
 
 
+
+   
+
+    useEffect(() => {
+        setSocket( io ('http://localhost:8080'))
+    },[])
+
+
+    useEffect(()=>{
+            socket?.emit('adduser',localAccount?.id);
+            socket?.on('getUsers',users =>{
+                console.log("activeeuser>>>>.",users);
+            })
+    },[socket])
 
 
 
@@ -138,7 +153,17 @@ function Dashboard() {
 
 
    const fetchMessages = async(conversationID ,receiver) =>{
-            const result = await fetch(`http://localhost:8000/message/${conversationID}?senderId=${localAccount?.id}&&receiverId=${receiver?.receiverId}`,{
+
+    const senderId = localAccount?.id; 
+    const receiverId = receiver?.receiverId;
+
+    console.log("Sending IDs:", { senderId, receiverId });
+    if (!conversationID || !receiver) {
+        console.warn("Conversation ID or receiver is missing");
+        return;
+    }
+
+            const result = await fetch(`http://localhost:8000/message/${conversationID}?senderId=${senderId}&&receiverId=${receiverId}`,{
                 method: 'GET',
                 headers:{
                     'Content-Type' : 'application/json',
