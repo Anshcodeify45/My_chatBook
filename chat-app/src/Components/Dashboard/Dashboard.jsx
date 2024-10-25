@@ -181,11 +181,7 @@ function Dashboard() {
    }
 
 
-   console.log("msg DATA>>>>",msg)
-   console.log("Conversation ID>>",convid);
-   console.log("USER ID>>>>>",localAccount.id);
-   console.log("RCVR ID>>",rcverId);
-   console.log("user dataaaaa>>",users);
+
   
   
    

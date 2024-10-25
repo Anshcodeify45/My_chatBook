@@ -28,8 +28,16 @@ io.on('connection',(socket) => {
         io.emit('getUsers',users);
         }
     })
+
+    socket.on('disconnect' , () => {
+        users = users.filter(user => user.socketId !== socket.id)
+        io.emit('getUsers',users); 
+    })
    
 })
+
+
+
 
 const app = express()
 dotenv.config();
